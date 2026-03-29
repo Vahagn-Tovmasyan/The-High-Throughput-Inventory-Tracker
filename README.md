@@ -1,10 +1,10 @@
-# ⚡ High-Throughput Inventory Tracker
+# High-Throughput Inventory Tracker
 
 A flash-sale inventory system that handles thousands of concurrent purchase attempts for 500 limited-stock items **without overselling**, using **Redis** for distributed caching and **atomic concurrency control**.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -21,7 +21,7 @@ A flash-sale inventory system that handles thousands of concurrent purchase atte
               └────────────┘      └────────────┘
 ```
 
-## 🔧 Prerequisites
+## Prerequisites
 
 - **Node.js** 18+
 - **Redis** server running on `localhost:6379`
@@ -45,7 +45,7 @@ docker run -d --name redis -p 6379:6379 redis:alpine
 brew install redis && brew services start redis
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Install dependencies
@@ -58,7 +58,7 @@ npm start
 # Visit http://localhost:3000
 ```
 
-## 📡 API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -68,7 +68,7 @@ npm start
 | `GET` | `/api/stats` | Get purchase statistics |
 | `POST` | `/api/simulate` | Run flash-sale simulation |
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Load test: 1000 concurrent users, atomic strategy
@@ -81,7 +81,7 @@ npm run test:race
 node src/loadTest.js 3000 lock
 ```
 
-## 🔒 Concurrency Strategies
+## Concurrency Strategies
 
 ### Strategy 1: Atomic (Lua Script)
 Uses a Redis Lua script to perform an atomic **check-and-decrement** in a single operation. Because Lua scripts execute atomically within Redis, there is **zero race-condition risk**.
@@ -107,12 +107,12 @@ Uses the **Redlock algorithm** to acquire a distributed lock before modifying in
 | Feature | Atomic (Lua) | Lock (Redlock) |
 |---------|:------------:|:--------------:|
 | Race-condition safe | ✅ | ✅ |
-| Speed | ⚡ Fast | 🐢 Slower |
+| Speed | Fast | Slower |
 | Multi-step ops | ❌ | ✅ |
 | Lock contention | None | Possible |
 | Best for | Simple counters | Complex transactions |
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── public/                  # Web UI Dashboard
