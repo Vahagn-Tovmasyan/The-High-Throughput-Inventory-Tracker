@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="High-Throughput Inventory Tracker — Flash Sale Dashboard with distributed caching and concurrency control">
+  <title>Flash Sale — Inventory Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <h1>Flash Sale Tracker</h1>
+        </div>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          <span id="connection-status">Connecting...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Inventory Gauge -->
+      <section class="card gauge-card">
+        <h2 class="card-title">Live Inventory</h2>
+        <div class="gauge-container">
+          <div class="gauge">
+            <svg viewBox="0 0 200 200" class="gauge-svg">
+              <circle cx="100" cy="100" r="85" class="gauge-bg" />
+              <circle cx="100" cy="100" r="85" class="gauge-fill" id="gauge-fill"
+                stroke-dasharray="534"
+                stroke-dashoffset="0" />
+            </svg>
+            <div class="gauge-value">
+              <span class="gauge-number" id="inventory-count">500</span>
+              <span class="gauge-label">items left</span>
+            </div>
+          </div>
+        </div>
+        <div class="gauge-legend">
+          <span class="legend-total">/ 500 total</span>
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="card controls-card">
+        <h2 class="card-title">Controls</h2>
+        
+        <!-- Strategy Selector -->
+        <div class="control-group">
+          <label class="control-label">Concurrency Strategy</label>
+          <div class="strategy-toggle">
+            <button class="strategy-btn active" data-strategy="atomic" id="btn-atomic">
+              <span class="strategy-icon">⚛️</span>
+              <span class="strategy-name">Atomic</span>
+              <span class="strategy-desc">Lua Script (DECR)</span>
+            </button>
+            <button class="strategy-btn" data-strategy="lock" id="btn-lock">
+              <span class="strategy-icon">🔒</span>
+              <span class="strategy-name">Lock</span>
+              <span class="strategy-desc">Redlock (Distributed)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- User Count -->
+        <div class="control-group">
+          <label class="control-label">Concurrent Users</label>
+          <div class="user-count-control">
+            <input type="range" id="user-count-slider" min="100" max="3000" value="1000" step="100">
+            <span class="user-count-value" id="user-count-display">1000</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="btn-buy">
+            <span class="btn-icon">🛒</span> Buy 1 Item
+          </button>
+          <button class="btn btn-flash" id="btn-simulate">
+            <span class="btn-icon">🔥</span> Launch Flash Sale
+          </button>
+          <button class="btn btn-reset" id="btn-reset">
+            <span class="btn-icon">🔄</span> Reset Stock
+          </button>
+        </div>
+      </section>
+
+      <!-- Stats Panel -->
+      <section class="card stats-card">
+        <h2 class="card-title">Live Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-item stat-success">
+            <span class="stat-value" id="stat-successes">0</span>
+            <span class="stat-label">Purchases</span>
+          </div>
+          <div class="stat-item stat-fail">
+            <span class="stat-value" id="stat-failures">0</span>
+            <span class="stat-label">Rejected</span>
+          </div>
+          <div class="stat-item stat-total">
+            <span class="stat-value" id="stat-total">0</span>
+            <span class="stat-label">Total Requests</span>
+          </div>
+          <div class="stat-item stat-time">
+            <span class="stat-value" id="stat-time">—</span>
+            <span class="stat-label">Elapsed (ms)</span>
+          </div>
+        </div>
+
+        <!-- Result Banner -->
+        <div class="result-banner hidden" id="result-banner">
+          <span class="result-icon" id="result-icon"></span>
+          <span class="result-text" id="result-text"></span>
+        </div>
+      </section>
+
+      <!-- Event Log -->
+      <section class="card log-card">
+        <h2 class="card-title">Event Log</h2>
+        <div class="log-container" id="log-container">
+          <div class="log-entry log-info">System initialized. Ready for flash sale.</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>High-Throughput Inventory Tracker — Distributed Caching with Redis</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
